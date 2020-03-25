@@ -32,11 +32,11 @@ private activatedRoute: ActivatedRoute) { }
 
   create(): void {
     this.clienteService.create(this.cliente)
-      .subscribe(cliente => {
+      .subscribe(json => {
         this.router.navigate(['/clientes'])
         Swal.fire(
           'Nuevo cliente',
-          `Cliente ${cliente.nombre} creado con éxito`,
+          `${json.mensaje}: Cliente ${json.cliente.nombre}`,
           'success'
         )
       }
@@ -45,11 +45,11 @@ private activatedRoute: ActivatedRoute) { }
 
   update():void{
     this.clienteService.update(this.cliente)
-    .subscribe( cliente => {
+    .subscribe( json => {
       this.router.navigate(['/clientes'])
       Swal.fire(
         'Cliente Actualizado',
-        `Cliente ${cliente.nombre} actualizado con éxito!`,
+        `${json.mensaje}: Cliente ${json.cliente.nombre}`,
         'success'
       )
     }
