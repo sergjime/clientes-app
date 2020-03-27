@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Cliente } from './cliente';
 import { ClienteService } from './cliente.service';
 import Swal from 'sweetalert2'
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-clientes',
@@ -14,9 +15,14 @@ export class ClientesComponent implements OnInit {
   constructor(private clienteService: ClienteService) { }
 
   ngOnInit() {
-    this.clienteService.getClientes().subscribe(
-      clientes => this.clientes = clientes
-    );
+    this.clienteService.getClientes().pipe(
+      tap(clientes => {
+        console.log('ClienteComponent: tap 3');
+        clientes.forEach(cliente => {
+          console.log(cliente.nombre);
+        });
+      })
+    ).subscribe(clientes => this.clientes = clientes);
   }
 
   delete(cliente: Cliente): void {
@@ -27,7 +33,7 @@ export class ClientesComponent implements OnInit {
       },
       buttonsStyling: false
     })
-    
+
     swalWithBootstrapButtons.fire({
       title: '¿Está seguro?',
       text: `¿Seguro que desea eliminar al cliente ${cliente.nombre} ${cliente.apellido}?`,

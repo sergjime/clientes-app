@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
+import { formatDate } from '@angular/common';
 import { Router } from '@angular/router';
 import { Cliente } from './cliente';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { throwError } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { map, catchError, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs/internal/Observable';
 import Swal from 'sweetalert2'
 
@@ -17,7 +18,29 @@ export class ClienteService {
 
   getClientes(): Observable<Cliente[]> {
     return this.http.get(this.urlEndPoint).pipe(
-      map(response => response as Cliente[])
+      tap(response => {
+        console.log('ClienteService: tap 1'); // Nombre de los clientes sin convertir
+        let clientes = response as Cliente[];
+        clientes.forEach(cliente => {
+          console.log(cliente.nombre);
+        }
+        )
+      }),
+      map(response => { 
+        let clientes = response as Cliente[];
+        return clientes.map(cliente => {
+          cliente.nombre = cliente.nombre.toUpperCase();
+          //cliente.createAt = formatDate(cliente.createAt, 'EEEE dd, MMMM yyyy', 'es');
+          return cliente;
+        });
+      }),
+      tap(response => {
+        console.log('ClienteService: tap 2'); // Nombre de los clientes convertidos a mayúscula
+        response.forEach(cliente => {
+          console.log(cliente.nombre);
+        }
+        )
+      })
     );
   }
 
