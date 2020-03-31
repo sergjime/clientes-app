@@ -35,17 +35,15 @@ export class FormComponent implements OnInit {
   create(): void {
     this.clienteService.create(this.cliente)
       .subscribe(json => {
-        this.router.navigate(['/clientes'])
+        this.router.navigate(['/clientes']);
         Swal.fire(
           'Nuevo cliente',
-          `${json.mensaje}: Cliente ${json.cliente.nombre}`,
+          `${json.mensaje}: Cliente ${json.client.nombre}`,
           'success'
         )
       },
       err => {
         this.errores = err.error.errors as string[];
-        console.error('Código del error desde el backend: ' + err.status);
-        console.error(err.error.errors);
       }
       );
   }
@@ -53,17 +51,15 @@ export class FormComponent implements OnInit {
   update(): void {
     this.clienteService.update(this.cliente)
       .subscribe(json => {
-        this.router.navigate(['/clientes'])
+        this.router.navigate(['/clientes']);
         Swal.fire(
           'Cliente Actualizado',
-          `${json.mensaje}: Cliente ${json.cliente.nombre}`,
+          `${json.mensaje}: Cliente ${json.client.nombre}`,
           'success'
         )
       },
       err => {
         this.errores = err.error.errors as string[];
-        console.error('Código del error desde el backend: ' + err.status);
-        console.error(err.error.errors);
       }
       )
   }

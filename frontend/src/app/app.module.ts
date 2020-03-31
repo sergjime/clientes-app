@@ -15,6 +15,11 @@ import { FormComponent } from './clientes/form.component';
 import { ClienteService } from './clientes/cliente.service';
 
 import localeEs from '@angular/common/locales/es';
+import { PaginatorComponent } from './paginator/paginator.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
 registerLocaleData(localeEs, 'es');
 
@@ -25,13 +30,17 @@ registerLocaleData(localeEs, 'es');
     FooterComponent,
     DirectivaComponent,
     ClientesComponent,
-    FormComponent
+    FormComponent,
+    PaginatorComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    MatDatepickerModule,
+    MatMomentDateModule,
+    BrowserAnimationsModule
   ],
   providers: [
     ClienteService,

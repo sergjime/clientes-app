@@ -16,27 +16,24 @@ export class ClienteService {
 
   constructor(private http: HttpClient, private router: Router) { }
 
-  getClientes(): Observable<Cliente[]> {
-    return this.http.get(this.urlEndPoint).pipe(
-      tap(response => {
-        console.log('ClienteService: tap 1'); // Nombre de los clientes sin convertir
-        let clientes = response as Cliente[];
-        clientes.forEach(cliente => {
+  getClientes(page: number): Observable<any> {
+    return this.http.get(this.urlEndPoint + '/page/' + page).pipe(
+      tap((response: any) => {
+        (response.content as Cliente[]).forEach(cliente => {
           console.log(cliente.nombre);
         }
         )
       }),
-      map(response => { 
-        let clientes = response as Cliente[];
-        return clientes.map(cliente => {
+      map((response: any) => { 
+        (response.content as Cliente[]).map(cliente => {
           cliente.nombre = cliente.nombre.toUpperCase();
           //cliente.createAt = formatDate(cliente.createAt, 'EEEE dd, MMMM yyyy', 'es');
           return cliente;
         });
+        return response;
       }),
       tap(response => {
-        console.log('ClienteService: tap 2'); // Nombre de los clientes convertidos a mayúscula
-        response.forEach(cliente => {
+        (response.content as Cliente[]).forEach(cliente => {
           console.log(cliente.nombre);
         }
         )
@@ -79,7 +76,8 @@ export class ClienteService {
         }
 
         console.error(e.error.mensaje);
-        Swal.fire(e.error.mensaje, e.error.error, 'error');
+        this.router.navigate(['/clientes']);
+        Swal.fire(e.error.mensaje, e.error.error, 'success');
         return throwError(e);
       })
     );
